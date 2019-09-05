@@ -1,1 +1,84 @@
-<p>arrangements works!</p>
+<div id="start" class="album py-5 bg-light">
+    <div class="row mb-2">
+        <div class="col-lg-6 col-md-6 col-sm-12 rightOnSmall">
+            Sort by: 
+            <select class="custom-select" (change)="sortByPrice()" [(ngModel)]="sortSelection">
+                <option selected>Newest</option>
+                <option *ngFor="let category of sortCategories" value="{{category}}">{{category}}</option>
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 text-right">
+            Filter by category:
+            <select class="custom-select" (change)="filterByCategory()" [(ngModel)]="selection">
+                <option selected>All</option>
+                <option *ngFor="let category of categories" value="{{category}}">{{category}}</option>
+            </select>
+        </div>
+    </div>
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item" [ngClass]="{'disabled': atBeginning}">
+                <a class="page-link" href="#start" aria-label="Previous"(click)="goToPrevious()">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item" *ngFor="let page of pages" [ngClass]="{'active': currentPage == page}">
+                <a class="page-link" href="#start" (click)="goToPage(page)">{{page}}</a>
+            </li>
+
+            <li class="page-item" [ngClass]="{'disabled': atEnd}">
+                <a class="page-link" href="#start" aria-label="Next"(click)="goToNext()">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <div class="row">
+        <div class="col-6 col-md-4 mb-4" *ngFor="let arrangement of arrangementPages[currentPage]">
+            <div class="card box-shadow h-100">
+                <img class="card-img-top ieImage"
+                    src="{{arrangement.imageUrl}}"
+                    alt="{{arrangement.name}}">
+                <div class="card-body" style="text-align: center;">
+                    <p class="mb-0" style="font-size: 1.4rem">{{arrangement.name}}</p>
+                    <p class="mb-2">{{arrangement.price | currency}}</p>
+                    <button type="button"
+                        routerLink="product/{{arrangement.id}}"
+                        class="btn btn-sm btn-outline-secondary"
+                        style="width: 75%">
+                        View
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item" [ngClass]="{'disabled': atBeginning}">
+                <a class="page-link" href="#start" aria-label="Previous"(click)="goToPrevious()">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item" *ngFor="let page of pages" [ngClass]="{'active': currentPage == page}">
+                <a class="page-link" href="#start" (click)="goToPage(page)">{{page}}</a>
+            </li>
+
+            <li class="page-item" [ngClass]="{'disabled': atEnd}">
+                <a class="page-link" href="#start" aria-label="Next"(click)="goToNext()">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+

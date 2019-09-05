@@ -7,6 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -22,6 +23,7 @@ import { ViewProductComponent } from './components/view-product/view-product.com
 import { AwayDatesService } from './services/awayDate.service';
 import { AddonService } from './services/addon.service';
 import { SeoService } from './services/seo.service';
+import { ArrangementService } from './services/arrangement.service';
 
 
 @NgModule({
@@ -45,11 +47,13 @@ import { SeoService } from './services/seo.service';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     FlashMessagesModule.forRoot(),
+    FormsModule
   ],
   providers: [
     AddonService,
     AwayDatesService,
-    SeoService
+    SeoService,
+    ArrangementService
   ],
   bootstrap: [AppComponent]
 })

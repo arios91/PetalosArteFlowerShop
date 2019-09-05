@@ -1,0 +1,14 @@
+.ieImage{
+    height: 400px;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .ieImage{
+        height: 400px;
+    }
+}
+@media(max-width: 768px){
+    .rightOnSmall{
+        text-align: right;
+        margin-bottom: 10px;
+    }
+}
