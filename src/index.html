@@ -2,12 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>PetalosArteFlowerShop</title>
+  <title>Petalos y Arte Flower Shop</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title">
+  <meta name="description">
+  <meta name="url">
+  <meta name="author">
+  <meta name="keywords">
+  <meta name="language">
+  <meta name="geo.region"/>
+  <meta name="geo.placename"/>
+  <meta name="geo.position"/>
+  <meta name="ICBM"/>
+  <meta name="og:title"/>
+  <meta name="og:site_name"/>
+  <meta name="og:description"/>
+  <meta name="og:type"/>
+  <meta name="og:image"/>
+  <meta name="og:url"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Sacramento" rel="stylesheet">
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  
+  <script type="text/javascript">
+    Stripe.setPublishableKey('pk_live_qoFHyDfWaIhk6ZwxCsz6K5Ya');
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(document).click(function (event) {
+          var clickover = $(event.target);
+          var _opened = $(".navbar-collapse").hasClass("show");
+          if (_opened === true && !clickover.hasClass("navbar-toggler")) {
+              $(".navbar-toggler").click();
+          }
+        });
+
+    });
+  </script>
 </head>
 <body>
-  <app-root></app-root>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  <app-root>
+    Loading Petalos y Arte Flower Shop...
+  </app-root>
 </body>
 </html>

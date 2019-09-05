@@ -1,0 +1,21 @@
+.headerText{
+    line-height: 90px;
+}
+.headerText > span{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    color: #7f7f7f;
+}
+.showOnMobile{
+    display:none !important;
+}
+@media (max-width: 768px){
+    .showOnMobile{
+        display: inline-block !important;
+        line-height: 25px !important;
+    }
+    .removeOnMobile{
+        display: none !important;
+    }
+}

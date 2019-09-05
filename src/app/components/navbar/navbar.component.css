@@ -1,0 +1,14 @@
+.headerLink{
+    width: 50%;
+    text-align: center;
+}
+.container{
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+}
+.navbar-nav{
+    width: 100%;
+}
+.headerLinkText:hover{
+    text-decoration: underline;
+}

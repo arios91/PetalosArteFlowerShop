@@ -1,0 +1,22 @@
+<div class="ieInfoMessage mb-4" style="text-align: center">
+    <span>
+        <b style="color:red;">Warning:</b><br/>
+        We have detected that you are using Internet Explorer.<br/>
+        This site is not fully supported on this browser.<br/>
+        You may continue using Internet Explorer, but it is recommended that you switch to a browser such as Chrome, Firefox, or Edge.<br/>
+        We appreciate your business.
+    </span>
+</div>
+<div class="mb-4 text-danger" style="text-align: center" *ngIf="awayDate.active">
+    <b> Note:</b> {{awayDate.awayNote}}
+</div>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+        <img class="d-block w-100" style="height: 450px"
+            src="https://images.pexels.com/photos/428611/bouquet-roses-colorful-floral-428611.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb"
+            alt="Petalos y Arte Flower Shop - main image">
+        </div>
+    </div>
+</div>
+<app-arrangements></app-arrangements>

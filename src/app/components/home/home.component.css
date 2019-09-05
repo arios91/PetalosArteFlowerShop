@@ -1,0 +1,9 @@
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .ieInfoMessage{
+        display: block !important;
+    }
+}
+
+.ieInfoMessage{
+    display: none;
+}
