@@ -1,0 +1,13 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.remove-height{
+  height: 100%;
+}
+
+.discount-input{
+  border-radius: 0.25rem;
+}

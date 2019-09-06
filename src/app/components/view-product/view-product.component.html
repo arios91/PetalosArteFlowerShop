@@ -1,1 +1,56 @@
-<p>view-product works!</p>
+<div class="container p-0" *ngIf="product">
+    <div class="row">
+        <div class="col-md-6 p-0">
+            <img class="card-img-top"
+            src="{{product.imageUrl}}"
+            alt="{{product.name}}">
+        </div>
+        <div class="col-md-6 p-0 text-center">
+            <div class="card mb-3">
+                <div class="card-body">
+                <h1>{{product.name}}</h1> <h4>{{totalPrice | currency}}</h4>
+                <span>
+                    {{product.longDescription}}
+                </span>
+    
+                <h3 style="padding-top: 25px;" *ngIf="product.availableAddons.length > 0">Make it Special!</h3>
+                <div *ngIf="product.availableAddons.length > 0" class="row mt-3" style="margin-left:0; margin-right:0;">
+                    
+                    <div *ngFor="let addon of product.availableAddons" class="col-{{12 / product.availableAddons.length}} card" style="min-height:230px; padding:0;">
+                    <div class="imageContainer">
+                        <img class="card-img-top"
+                        src="{{addon.imageUrl}}"
+                        alt="Card image cap"
+                        height="130">
+                    </div>
+                    <div class="card-body" style="padding: .25rem; position: absolute; bottom:0; left:0; text-align:center; width:100%;">
+                        <span class="card-title">{{addon.description}}</span><br/>
+                        <a *ngIf="!addon.inCart" (click)="addItem(addon)" class="btn btn-outline-primary">Add</a>
+                        <a *ngIf="addon.inCart" (click)="removeItem(addon)" class="btn btn-outline-danger">Remove</a>
+                    </div>
+                    </div>
+                </div>
+                
+                <div *ngIf="orderedBalloons" class="mt-4">
+                    Note: When ordering ballons, please add the occasion in the "special instructions" input in the cart before checking out in order to ensure proper balloon is used.
+                </div>
+                <button (click)="addToCart()" type="button" class="btn btn-primary btn-block mt-4">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="backdrop" [ngStyle]="{'display':display}"></div>
+<div class="modal" id="exampleModal" [ngStyle]="{'display':display}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-body">
+        Successfully added to cart!
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()" routerLink="/">Continue shopping</button>
+        <button type="button" class="btn btn-primary" routerLink="/cart">Go To Cart</button>
+    </div>
+    </div>
+</div>
+</div>

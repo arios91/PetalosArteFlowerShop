@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-receipt',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./receipt.component.css']
 })
 export class ReceiptComponent implements OnInit {
+  receipt:any;
 
-  constructor() { }
+  constructor(
+    private cartService: CartService,
+  ) { }
 
   ngOnInit() {
+    this.receipt = this.cartService.getReceipt();
+    this.cartService.clearReceipt();
   }
 
 }

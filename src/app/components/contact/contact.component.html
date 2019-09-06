@@ -1,1 +1,105 @@
-<p>contact works!</p>
+<div class="container" style="font-family: roboto; color:#6a686c">
+        <div class="row">
+            <div class="col-lg-4 col-md-12 col-sm-12 background-pink">
+                <div class="text-center">
+                    <h3>Have a question?</h3>
+                    <p>Ask away, we'll get back to you right away!</p>
+                </div>
+                <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" class="plr-10">
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control"
+                            placeholder="Your Name"
+                            name="cName"
+                            #cName="ngModel"
+                            [ngClass]="{'is-invalid':cName.errors && cName.touched}"
+                            [(ngModel)]="customerName"
+                            minlength="2" required>
+                        <div [hidden]="!cName.errors?.required"
+                            class="invalid-feedback">
+                            We need your name to get back to you.
+                        </div>
+                        <div [hidden]="!cName.errors?.minlength"
+                            class="invalid-feedback">
+                            We need your name to get back to you.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="cEmail"
+                            class="form-control"
+                            placeholder="Email Address"
+                            name="cEmail"
+                            #cEmail="ngModel"
+                            [ngClass]="{'is-invalid':cEmail.errors && cEmail.touched}"
+                            [(ngModel)]="customerEmail"
+                            pattern="\S+@\S+"
+                            required>
+                        <div [hidden]="!cEmail.errors?.required"
+                            class="invalid-feedback">
+                            Email required.
+                        </div>
+                        <div [hidden]="!cEmail.errors?.pattern"
+                            class="invalid-feedback">
+                            Invalid Email.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control"
+                            name="cPhone"
+                            placeholder="Phone Number"
+                            #cPhone="ngModel"
+                            [ngClass]="{'is-invalid':cPhone.errors && cPhone.touched}"
+                            [(ngModel)]="customerPhone"
+                            placeholder="(123) 456-7890"
+                            [textMask]="{mask:phoneMask}"
+                            pattern="\(\d{3}\) \d{3}-\d{4}"
+                            required>
+                        <div [hidden]="!cPhone.errors?.required"
+                            class="invalid-feedback">
+                            Phone number required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea
+                            style="height: 150px"
+                            class="form-control"
+                            name="instructions"
+                            placeholder="What can we do for you"
+                            #instructions="ngModel"
+                            [(ngModel)]="customerQuestion"
+                            maxlength="300"
+                            required>
+                        </textarea>
+                        <div [hidden]="!instructions.errors?.maxLength"
+                            class="invalid-feedback">
+                            Inquiry must be under 300 characters
+                        </div>
+                    </div>
+                    <flash-messages></flash-messages>
+                    <button id="customButton"
+                        class="btn btn-primary btn-block submitButton">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <img class="d-block"
+                src="../../../assets/images/contactImage.png"
+                alt="Petalos y Arte Flower Shop - contact image">
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 text-center background-pink">
+                <h3>Come visit us!</h3>
+                <p class="mb-0">200 N La Homa Rd</p>
+                <p>Palmview, TX 78572</p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.8739541405207!2d-98.36389268450192!3d26.233284795321342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8665a90517ceb9e1%3A0x5e7c51a8b3767b40!2sPetalos+Y+Arte+Flower+Shop!5e0!3m2!1sen!2sus!4v1529378389506"
+                    height="335"
+                    class="plr-10"
+                    frameborder="0"
+                    style="border: 0; width: inherit;"
+                    allowfullscreen>
+                </iframe>
+    
+            </div>
+        </div>
+    </div>

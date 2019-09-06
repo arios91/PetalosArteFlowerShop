@@ -1,1 +1,360 @@
-<p>cart works!</p>
+<div *ngFor="let product of products" class="mt-3">
+  <div class="row">
+    <div class="col-4" style="padding: 0px">
+      <img src="{{product.imageUrl}}" alt="arrangement image" width="130px">
+    </div>
+    <div class="col-4">
+      <h4>
+        {{product.name}}
+      </h4>
+      <div *ngIf="product.selectedAddons.length > 0">
+        along with:
+        <div *ngFor="let addon of product.selectedAddons">
+          {{addon.description}}
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <h4>
+        Price: {{product.price | currency}}
+      </h4>
+    </div>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <button type="button" class="btn btn-outline-secondary" (click)="removeProduct(product);">Remove</button>
+  </div>
+</div>
+
+<div class="mt-5" *ngIf="products.length > 0">
+  <form #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)">
+    <div class="row">
+      <div id="customerInfoDiv" class="col-6">
+        <h4>1. Your Info</h4>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text"
+            class="form-control"
+            name="firstName"
+            #customerFirstName="ngModel"
+            [ngClass]="{'is-invalid':customerFirstName.errors && customerFirstName.touched}"
+            [(ngModel)]="customer.firstName"
+            minlength="2" required>
+          <div [hidden]="!customerFirstName.errors?.required"
+            class="invalid-feedback">
+            First Name required.
+          </div>
+          <div [hidden]="!customerFirstName.errors?.minlength"
+            class="invalid-feedback">
+            First Name must be at least 2 characters
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text"
+            class="form-control"
+            name="lastName"
+            #customerLastName="ngModel"
+            [ngClass]="{'is-invalid':customerLastName.errors && customerLastName.touched}"
+            [(ngModel)]="customer.lastName"
+            minlength="2" required>
+          <div [hidden]="!customerLastName.errors?.required"
+            class="invalid-feedback">
+            Last Name required.
+          </div>
+          <div [hidden]="!customerLastName.errors?.minlength"
+            class="invalid-feedback">
+            Last Name must be at least 2 characters
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text"
+            class="form-control"
+            name="phone"
+            #customerPhone="ngModel"
+            [ngClass]="{'is-invalid':customerPhone.errors && customerPhone.touched}"
+            [(ngModel)]="customer.phone"
+            placeholder="(123) 456-7890"
+            [textMask]="{mask:phoneMask}"
+            pattern="\(\d{3}\) \d{3}-\d{4}"
+            required>
+          <div [hidden]="!customerPhone.errors?.required"
+            class="invalid-feedback">
+            Phone number required.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email"
+            class="form-control"
+            name="email"
+            #customerEmail="ngModel"
+            [ngClass]="{'is-invalid':customerEmail.errors && customerEmail.touched}"
+            [(ngModel)]="customer.email"
+            pattern="\S+@\S+"
+            required>
+          <div [hidden]="!customerEmail.errors?.required"
+            class="invalid-feedback">
+            Email required.
+          </div>
+          <div [hidden]="!customerEmail.errors?.pattern"
+            class="invalid-feedback">
+            Invalid Email.
+          </div>
+        </div>
+      </div>
+      <div id="recipientInfoDiv" class="col-6">
+        <h4>2. Their Info</h4>
+        <div class="form-group">
+          <label for="rfirstName">First Name</label>
+          <input type="text"
+            class="form-control"
+            name="rfirstName"
+            #recipientFirstName="ngModel"
+            [ngClass]="{'is-invalid':recipientFirstName.errors && recipientFirstName.touched}"
+            [(ngModel)]="recipient.firstName"
+            minlength="2" required>
+          <div [hidden]="!recipientFirstName.errors?.required"
+            class="invalid-feedback">
+            First Name required.
+          </div>
+          <div [hidden]="!recipientFirstName.errors?.minlength"
+            class="invalid-feedback">
+            First Name must be at least 2 characters
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rlastName">Last Name</label>
+          <input type="text"
+            class="form-control"
+            name="rlastName"
+            #recipientLastName="ngModel"
+            [ngClass]="{'is-invalid':recipientLastName.errors && recipientLastName.touched}"
+            [(ngModel)]="recipient.lastName"
+            minlength="2" required>
+          <div [hidden]="!recipientLastName.errors?.required"
+            class="invalid-feedback">
+            Last Name required.
+          </div>
+          <div [hidden]="!recipientLastName.errors?.minlength"
+            class="invalid-feedback">
+            Last Name must be at least 2 characters
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rphone">Phone Number (optional)</label>
+          <input type="text"
+            class="form-control"
+            name="rphone"
+            #recipientPhone="ngModel"
+            [ngClass]="{'is-invalid':recipientPhone.errors && recipientPhone.touched}"
+            [(ngModel)]="recipient.phone"
+            placeholder="(123) 456-7890"
+            [textMask]="{mask:phoneMask}"
+            pattern="\(\d{3}\) \d{3}-\d{4}">
+          <div [hidden]="!recipientPhone.errors?.required"
+            class="invalid-feedback">
+            Phone number required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col-12">
+        <h4>3. Delivery Options</h4>
+      </div>
+      <div class="col-12 form-control remove-height">
+        <label class="radio-inline">
+          <input type="radio" value="delivery" name="deliveryOption"
+            [(ngModel)]="deliveryOption" (change)="toggleDeliveryOption()"> Delivery
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="pickup" name="deliveryOption" disabled={{awayDate.active}}
+            [(ngModel)]="deliveryOption" (change)="toggleDeliveryOption()"> Pickup
+        </label>
+        <div *ngIf="deliveryOption == 'delivery'">
+            <div class="form-group">
+              <label for="mydate">Delivery Date<br/>
+                Note: Cutoff time for same-day delivery is 1:00 pm
+              </label>
+              <div class="text-danger" *ngIf="awayDate.active"><b>Note:</b> {{awayDate.awayNote}}</div>
+              <my-date-picker
+                name="mydate"
+                [options]="dateOptions"
+                [(ngModel)]="deliveryDate"
+                required>
+              </my-date-picker>
+            </div>
+
+            <div class="form-group">
+              <label for="addrLineOne">Address</label>
+              <input type="text"
+                class="form-control"
+                name="addrLineOne"
+                #addrLineOne="ngModel"
+                [ngClass]="{'is-invalid':addrLineOne.errors && addrLineOne.touched}"
+                [(ngModel)]="shippingAddr.lineOne"
+                minlength="2" required>
+              <div [hidden]="!addrLineOne.errors?.required"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+              <div [hidden]="!addrLineOne.errors?.minlength"
+                class="invalid-feedback">
+                Address must be at least 2 characters
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="text"
+                class="form-control"
+                name="addrLineTwo"
+                #addrLineTwo="ngModel"
+                [ngClass]="{'is-invalid':addrLineTwo.errors && addrLineTwo.touched}"
+                [(ngModel)]="shippingAddr.lineTwo">
+            </div>
+            <div class="row">
+              <div class="form-group col-5">
+                <label for="addrCity">City</label>
+                <input type="text"
+                  class="form-control"
+                  name="addrCity"
+                  #addrCity="ngModel"
+                  [ngClass]="{'is-invalid':addrCity.errors && addrCity.touched}"
+                  [(ngModel)]="shippingAddr.city"
+                  minlength="2" required>
+                <div [hidden]="!addrCity.errors?.required"
+                  class="invalid-feedback">
+                  City is required.
+                </div>
+                <div [hidden]="!addrCity.errors?.minlength"
+                  class="invalid-feedback">
+                  City must be at least 2 characters
+                </div>
+              </div>
+              <div class="form-group col-3">
+                <label for="addrState">State</label>
+                <input type="text"
+                  style="text-transform: uppercase;"
+                  class="form-control"
+                  name="addrState"
+                  #addrState="ngModel"
+                  [ngClass]="{'is-invalid':addrState.errors && addrState.touched}"
+                  [(ngModel)]="shippingAddr.state"
+                  minlength="2" maxlength="2" required>
+                <div [hidden]="!addrState.errors?.required"
+                  class="invalid-feedback">
+                  City is required.
+                </div>
+                <div [hidden]="!addrState.errors?.minlength"
+                  class="invalid-feedback">
+                  City must be at least 2 characters
+                </div>
+              </div>
+              <div class="form-group col-4">
+                <label for="addrZip">ZIP</label><br/>
+
+                <input type="text"
+                  class="form-control"
+                  name="addrZip"
+                  #addrZip="ngModel"
+                  [ngClass]="{'is-invalid':addrZip.errors && addrZip.touched}"
+                  [(ngModel)]="shippingAddr.zip"
+                  (keyup)="calculateShipping();"
+                  minlength="5" maxlength="5" required>
+                <div [hidden]="!addrZip.errors?.required"
+                  class="invalid-feedback">
+                  ZIP is required.
+                </div>
+                <div [hidden]="!addrZip.errors?.minlength"
+                  class="invalid-feedback">
+                  ZIP must be 5 characters
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cardMsg">Card Message</label>
+              <input
+                class="form-control"
+                name="cardMsg"
+                #cardMsg="ngModel"
+                [ngClass]="{'is-invalid':cardMsg.errors && cardMsg.touched}"
+                [(ngModel)]="cardMessage"
+                maxlength="250">
+              <div [hidden]="!cardMsg.errors?.maxLength"
+                class="invalid-feedback">
+                Card message must be under 250 characters
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="instructions">Special Instruction Ex. Occasion, Private Neighborhood Code, Preferred Delivery Time</label>
+              <input
+                class="form-control"
+                name="instructions"
+                #instructions="ngModel"
+                [(ngModel)]="specialInstructions"
+                maxlength="250">
+              <div [hidden]="!instructions.errors?.maxLength"
+                class="invalid-feedback">
+                Special Instructions must be under 250 characters
+              </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row mt-2 mb-2" style="border: 1px solid #ced4da; text-align:left;">
+      <div class="col-12">
+        <h4>4. Review Summary</h4>
+      </div>
+      <div class="col-12 form-group">
+        <label for="discountCode" class="mr-2">Promo Code </label>
+        <input type="text"
+          name="discountCode"
+          class="mr-2 discount-input"
+          #discountCode="ngModel"
+          [(ngModel)]="userDiscountCode">
+          <a id="discountButton"
+            *ngIf="!discountApplied"
+            class="btn btn-success discount-button"
+            (click)="addDiscountCode()">
+            Apply
+          </a>
+          <a id="removeDiscountButton"
+            *ngIf="discountApplied"
+            class="btn btn-danger discount-button"
+            (click)="removeDiscountCode()">
+            Remove
+          </a>
+      </div>
+      <span *ngIf="discountApplied" class="col-12">
+        Discount: {{discount | currency}}
+      </span>
+      <span class="col-12">
+        Subtotal: {{subTotal | currency}}
+      </span>
+      <span class="col-12">
+        Taxes: {{taxes | currency}}
+      </span>
+      <span class="col-12" *ngIf="deliveryOption === 'delivery'">
+        Shipping: {{deliveryZone.price | currency}}
+      </span>
+      <span class="col-12">
+        Total: {{totalPrice | currency}}
+      </span>
+    </div>
+
+    <flash-messages></flash-messages>
+    <button id="customButton"  class="col-12 btn btn-primary btn-block">Checkout Now</button>
+  </form>
+</div>
+    
+<div class="row" *ngIf="products.length == 0" class="mt-5 mb-5">
+  <div class="col-12 text-center">
+    You have no items in your cart
+  </div>
+</div>
+    

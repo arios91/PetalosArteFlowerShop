@@ -1,1 +1,14 @@
-<p>receipt works!</p>
+<div class="container" style="text-align: center;"  *ngIf="receipt">
+    <div style="margin-bottom: 30px;">
+        <h2>Your order has been received.</h2>
+        You will receive a confirmation email shortly,<br/>
+        the following is your receipt.<br/>
+    </div>
+
+    <div [innerHTML]="receipt"></div>
+
+    <div style="margin-top: 15px">
+        Thank you for supporting your local business!<br/>
+        Please consider liking or sharing our <a href="https://www.facebook.com/Petalos-y-Arte-Flower-Shop-362503580513879/" target="_blank">Facebook Page</a><br/>
+    </div>
+</div>
