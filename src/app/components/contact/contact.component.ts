@@ -40,7 +40,6 @@ export class ContactComponent implements OnInit {
       this.customerPhone = '';
       this.customerQuestion = '';
     }
-    let tmp = 'TEST';
   }
 
   validEmail(email) {
