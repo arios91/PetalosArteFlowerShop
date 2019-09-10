@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Arrangement } from '../models/Arrangement';
+import { Discount } from '../models/Discounts';
 
 @Injectable()
 export class CartService {
   selectedArrangements:Arrangement[] = [];
   receipt:any;
+  discount:Discount;
 
   constructor() { }
 
@@ -26,16 +28,20 @@ export class CartService {
     }
   }
 
-  setReceipt(receipt:any){
+  setReceiptInfo(receipt:any, discount:Discount){
     this.receipt = receipt;
+    this.discount = discount;
   }
-
   getReceipt(){
     return this.receipt;
+  }
+  getDiscount(){
+    return this.discount;
   }
 
   clearReceipt(){
     this.receipt = '';
+    this.discount = {};
   }
   
   clearCart(){

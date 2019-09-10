@@ -1,6 +1,11 @@
 .ieImage{
     height: 400px;
 }
+
+.custom-select{
+    width: auto;
+    max-width: 100%;
+}
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     .ieImage{
         height: 400px;

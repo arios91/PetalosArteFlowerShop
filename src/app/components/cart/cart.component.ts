@@ -53,6 +53,7 @@ export class CartComponent implements OnInit {
   cardMessage: string = '';
   phoneMask: any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   orderEmail: string = '';
+  receipt: string = '';
   specialInstructions: string = '';
   userDiscountCode: string = '';
 
@@ -198,7 +199,7 @@ export class CartComponent implements OnInit {
           this.products
         );
         this.cartService.clearCart();
-        this.cartService.setReceipt(this.orderEmail);
+        this.cartService.setReceiptInfo(this.receipt, this.newDiscount);
       }
     });
 
@@ -247,7 +248,6 @@ export class CartComponent implements OnInit {
       }
     }
     this.products = tmpArr;
-    console.log(this.products);
     this.calculateSubTotal();
   }
   
@@ -299,7 +299,7 @@ export class CartComponent implements OnInit {
 
   addDiscountCode(){
     for(let discount of this.discountCodes){
-      if(discount.name === this.userDiscountCode){
+      if(discount.name === this.userDiscountCode && discount.active){
         this.currentDiscount = discount;
         this.discount = this.subTotal * (discount.discount / 100);
         this.subTotal -= this.discount;
@@ -366,6 +366,7 @@ export class CartComponent implements OnInit {
       };
 
       this.buildOrderEmail(this.newDiscount);
+      this.buildReceipt(this.newDiscount);
       this.handlePayment();
     }
     
@@ -400,24 +401,45 @@ export class CartComponent implements OnInit {
     return true;
   }
 
+  buildReceipt(discount:Discount){
+    this.receipt = this.getDeliveryDateInfo();
+    this.receipt += this.getDeliveryPersonInfo();
+    this.receipt += this.getOrderInfo();
+    this.receipt += this.getAdditionalInfo();
+  }
+
   buildOrderEmail(discount:Discount){
+    this.orderEmail = this.getDeliveryDateInfo();
+    this.orderEmail += this.getDeliveryPersonInfo();
+    this.orderEmail += this.getContactPersonInfo();
+    this.orderEmail += this.getOrderInfo();
+    this.orderEmail += this.getAdditionalInfo();
+    this.orderEmail += this.getDiscountInfo(discount);
+  }
+
+  getDeliveryDateInfo(){
     var deliveryDateString: String = "";
     if(this.deliveryOption === "pickup"){
       deliveryDateString = "Pickup";
     }else if(this.deliveryOption === "delivery"){
       deliveryDateString = `${this.deliveryDate.date.month}/${this.deliveryDate.date.day}/${this.deliveryDate.date.year}`;
     }
-    this.orderEmail = `
+    let deliveryDateInfo = `
     <table style="width: 90%;" align="center">
     <tr>
       <td style="width: 25%; text-align:right; font-weight: bold;">Delivery Date:</td>
       <td style="width: 75%; text-align:left; padding-left: 25px;">${deliveryDateString}</td>
-    </tr>`;
+    </tr>`
 
+    return deliveryDateInfo;
+  }
+
+  getDeliveryPersonInfo(){
+    let deliveryInfo = '';
     if(this.deliveryOption === "delivery"){
-      this.orderEmail += `
+      deliveryInfo = `
       <tr>
-        <td style="width: 25%; text-align:right; font-weight: bold;">Delivery To:</td>
+        <td style="width: 25%; text-align:right; font-weight: bold;">Deliver To:</td>
         <td style="width: 75%; text-align:left; padding-left: 25px;">${this.recipient.firstName} ${this.recipient.lastName}</td>
       </tr>
       <tr>
@@ -432,10 +454,8 @@ export class CartComponent implements OnInit {
         <td style="width: 25%; text-align:right; font-weight: bold;">Phone:</td>
         <td style="width: 75%; text-align:left; padding-left: 25px;">${this.recipient.phone}</td>
       </tr>`;
-    }
-
-    if(this.deliveryOption === "pickup"){
-      this.orderEmail += `
+    }else if(this.deliveryOption === "pickup"){
+      deliveryInfo += `
       <tr>
         <td style="width: 25%; text-align:right; font-weight: bold;">For:</td>
         <td style="width: 75%; text-align:left; padding-left: 25px;">${this.recipient.firstName} ${this.recipient.lastName}</td>
@@ -446,7 +466,11 @@ export class CartComponent implements OnInit {
       </tr>`;
     }
 
-    this.orderEmail +=
+    return deliveryInfo;
+  }
+
+  getContactPersonInfo(){
+    let contactInfo =
     `<tr>
       <td>
         <br/>
@@ -472,47 +496,68 @@ export class CartComponent implements OnInit {
       </td>
     </tr>`;
 
+    return contactInfo;
+  }
+
+  getOrderInfo(){
+    let orderInfo = '';
 
     for(let product of this.products){
-      this.orderEmail += `
+      orderInfo += `
       <tr>
         <td style="width: 25%; text-align:right; font-weight: bold;">Product Details:</td>
         <td style="width: 75%; text-align:left; padding-left: 25px;">${product.name}</td>
       </tr>`;
       for(let addon of product.selectedAddons){
-        this.orderEmail += `
+        orderInfo += `
         <tr>
           <td style="width: 25%; text-align:right; font-weight: bold;">Addons:</td>
           <td style="width: 75%; text-align:left; padding-left: 25px;">${addon.name}</td>
         </tr>`;
       }
     }
-  
-    this.orderEmail += `
+
+    orderInfo += `
     <tr>
     <td style="width: 25%; text-align:right; font-weight: bold;">Total Price:</td>
     <td style="width: 75%; text-align:left; padding-left: 25px;">${this.currency.transform(this.totalPrice)}</td>
     </tr>`;
-    
+
+    return orderInfo;
+  }
+
+  getAdditionalInfo(){
+    let info = '';
     if(this.deliveryOption === "delivery"){
-      this.orderEmail += `
+      info += `
         <tr>
           <td>
             <br/>
           </td>
         </tr>
-    
+        `
+      if(this.cardMessage !== ''){
+        info += `
         <tr>
           <td style="width: 25%; text-align:right; font-weight: bold;">Card Message:</td>
           <td style="width: 75%; text-align:left; padding-left: 25px;">${this.cardMessage}</td>
         </tr>
+        `;
+      }
+      if(this.specialInstructions !== ''){
+        info += `
         <tr>
-          <td style="width: 25%; text-align:right; font-weight: bold;">Special Instructions:</td>
-          <td style="width: 75%; text-align:left; padding-left: 25px;">${this.specialInstructions}</td>
-        </tr>`;
+        <td style="width: 25%; text-align:right; font-weight: bold;">Special Instructions:</td>
+        <td style="width: 75%; text-align:left; padding-left: 25px;">${this.specialInstructions}</td>
+        </tr>
+        `;
+      }
     }
+    return info;
+  }
 
-    this.orderEmail += `
+  getDiscountInfo(discount:Discount){
+    let info = `
     <tr>
       <td style="width: 25%; text-align:right; font-weight: bold;">Discount Code:</td>
       <td style="width: 75%; text-align:left; padding-left: 25px;">${discount.name}</td>
@@ -520,19 +565,25 @@ export class CartComponent implements OnInit {
     <tr>
       <td style="width: 25%; text-align:right; font-weight: bold;">Discount Amount:</td>
       <td style="width: 75%; text-align:left; padding-left: 25px;">${discount.discount}%</td>
-    </tr>
-    `
-
+    </tr>`
+    
+    return info;
   }
 
   setConfirmationNumber(cardId:string){
     var cardToken = cardId.substring(cardId.length - 6, cardId.length);
-    this.orderEmail += `
+    this.orderEmail += this.closeTable(cardToken);
+    this.receipt += this.closeTable(cardToken);
+  }
+
+  closeTable(cardToken){
+    let info = `
     <tr>
-      <td style="font-weight: bold;">Confirmation Code:</td>
-      <td>${cardToken}</td>
+      <td style="width: 25%; font-weight: bold; text-align:right;">Confirmation Code:</td>
+      <td style="width: 75%; text-align:left;">${cardToken}</td>
     </tr>
     </table>`
+    return info;
   }
 
 

@@ -1,0 +1,19 @@
+.col-lg-4{
+    padding: 2px;
+}
+.container{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.submitButton{
+    background-color: #20A4F3;
+    border-color: #20A4F3;
+}
+
+.background-pink{
+    background: #F7E5E6;
+}
+
+.plr-10{
+    padding: 0px 10px;
+}

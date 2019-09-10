@@ -15,19 +15,11 @@ export class DiscountsService {
   constructor(
     private afs: AngularFirestore
   ) {
-    this.discountsCollection = this.afs.collection('discounts');
+    this.discountsCollection = this.afs.collection('discounts', ref => ref.where('active', '==', true));
   }
 
   addDiscountCode(newDiscount:Discount){
-    console.log(JSON.stringify(newDiscount));
-    this.discountsCollection.add(newDiscount)
-    .then(success =>{
-      console.log('successfully added discount code');
-    })
-    .catch(err => {
-      console.log('error adding discount');
-      console.log(err);
-    });
+    this.discountsCollection.add(newDiscount);
   }
 
   getDiscounts(): Observable<Discount[]>{
@@ -43,8 +35,10 @@ export class DiscountsService {
     return this.discounts;
   }
 
-  removeDiscount(discount:Discount){
-    this.discountsCollection.doc(discount.id).delete();
+  invalidateDiscount(discount:Discount){
+    this.discountsCollection.doc(discount.id).update({
+      active: false
+    })
   }
 
 }

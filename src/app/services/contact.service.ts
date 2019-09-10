@@ -10,10 +10,13 @@ export class ContactService {
     private flashMessage: FlashMessagesService,
   ) {}
 
-  sendContactEmail(customerEmail:string, emailBody:string){
+  sendContactEmail(customerEmail:string, textBody:string, emailBody:string){
     this.http.post('http://localhost:8080/sendEmail',
     {
       customerEmail,
+      recipientEmail: 'contact',
+      subject: 'Contact Request',
+      textBody,
       emailBody
     },)
     .subscribe(resp => {

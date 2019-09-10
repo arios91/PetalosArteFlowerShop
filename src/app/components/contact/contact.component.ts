@@ -14,7 +14,7 @@ export class ContactComponent implements OnInit {
   customerQuestion: string;
   phoneMask: any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
-  // @ViewChild('contactForm') form: any;
+  @ViewChild('contactForm', {static: false}) form: any;
 
   constructor(
     private flashMessage: FlashMessagesService,
@@ -34,17 +34,27 @@ export class ContactComponent implements OnInit {
         cssClass: 'alert-danger', timeout: 4000
       });
     }else{
-      this.contactService.sendContactEmail(this.customerEmail, this.buildContactEmail());
+      this.contactService.sendContactEmail(this.customerEmail, this.builtTextEmail(), this.buildContactEmail());
       this.customerName = '';
       this.customerEmail = '';
       this.customerPhone = '';
       this.customerQuestion = '';
+      this.form.resetForm();
     }
   }
 
   validEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  }
+
+  builtTextEmail(){
+    var textEmail = `Customer Name: ${this.customerName}, 
+    Phone: ${this.customerPhone}, 
+    Email: ${this.customerEmail},
+    Inquier: ${this.customerQuestion}`
+
+    return textEmail;
   }
 
   buildContactEmail(){

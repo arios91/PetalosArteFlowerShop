@@ -39,8 +39,6 @@ export class ArrangementService{
     return this.arrangements;
   }
 
-  
-
   getArrangement(id: string):Observable<Arrangement>{
     this.createAddonsMap();
     this.arrangementDoc = this.afs.doc<Arrangement>(`arrangements/${id}`);
@@ -58,42 +56,13 @@ export class ArrangementService{
     );
     return this.arrangement;
   }
-
-  addArrangement(product:Arrangement){
-    this.arrangementsCollection.add(product)
-    .then(success =>{
-      console.log('successfully added');
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
-
-  //////
-  //snippet for updating particular field/fields
-  //////
-  updateArrangementPopularity(product:Arrangement){
-    const path = `arrangements/${product.id}`;
-    var tmpDoc = this.afs.doc<Arrangement>(path);
-    const data = {
-      popularity : product.popularity + 1
-    }
-    tmpDoc.update(data);
-  }
-
-  updateArrangementPopularityTest(){
-    const path = `arrangements/001`;
-    var tmpDoc = this.afs.doc<Arrangement>(path);
-    const data = {
-      popularity : 3
-    }
-    tmpDoc.update(data);
-  }
   /////
   //snippet for updating a document
   /////
-  updateArrangement(product:Arrangement){
-    this.arrangementDoc.update(product);
+  increaseArrangementPopularity(product:Arrangement){
+    this.arrangementsCollection.doc(product.id).update({
+      popularity: product.popularity + 1
+    })
   }
   
   createAddonsMap(){
