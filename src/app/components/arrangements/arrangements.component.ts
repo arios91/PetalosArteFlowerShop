@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ArrangementService } from '../../services/arrangement.service';
 import { Arrangement} from '../../models/Arrangement';
-import { environment } from '../../../environments/environment';
-import { CoreEnvironment } from '@angular/compiler/src/compiler_facade_interface';
 
 
 @Component({
@@ -17,7 +15,6 @@ export class ArrangementsComponent implements OnInit {
   selection: string = 'All';
   sortCategories: string[] = [];
   sortSelection: string = 'Newest';
-  environment = environment;
 
   arrangementPages: Arrangement[][] = [];
   arrangementsPerPage = 9;
