@@ -5,7 +5,7 @@ import { PaymentService } from '../../services/payment.service';
 import { environment } from '../../../environments/environment';
 import { Arrangement } from '../../models/Arrangement';
 import { Customer } from '../../models/Customer';
-import { DeliveryZone } from '../../models/deliveryZone';
+import { DeliveryZone } from '../../models/DeliveryZone';
 import { Address } from '../../models/Address';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
