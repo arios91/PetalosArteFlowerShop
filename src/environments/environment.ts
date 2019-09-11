@@ -8,5 +8,6 @@ export const environment = {
     projectId: "petalos-arte",
     storageBucket: "petalos-arte.appspot.com",
     messagingSenderId: "220047130772"
-  }
+  },
+  api: 'http://localhost:8080'
 };

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ContactService {
+
+  apiUrl = environment.api;
 
   constructor(
     private http: Http,
@@ -11,7 +14,7 @@ export class ContactService {
   ) {}
 
   sendContactEmail(customerEmail:string, textBody:string, emailBody:string){
-    this.http.post('http://localhost:8080/sendEmail',
+    this.http.post(`${environment.api}/sendEmail`,
     {
       customerEmail,
       recipientEmail: 'contact',
@@ -31,5 +34,4 @@ export class ContactService {
         });
     })
   }
-
 }

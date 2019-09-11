@@ -8,5 +8,6 @@ export const environment = {
     projectId: "petalosarteprod",
     storageBucket: "petalosarteprod.appspot.com",
     messagingSenderId: "1039687597381"
-  }
+  },
+  api: 'https://alejandro-rios-api.herokuapp.com'
 };

@@ -6,6 +6,7 @@ import { DiscountsService } from './discounts.service';
 import { ArrangementService } from './arrangement.service';
 import { Discount } from '../models/Discounts';
 import { Arrangement } from '../models/Arrangement';
+import { environment } from '../../environments/environment';
 
 
 @Injectable()
@@ -20,8 +21,7 @@ export class PaymentService {
     ) {}
 
     processPayment(token: any, amount, email, description, emailBody, newDiscount:Discount, currentDiscount:Discount, discountApplied:boolean, products:Arrangement[]){
-        // this.http.post('/charge',
-        this.http.post('http://localhost:8080/charge',
+        this.http.post(`${environment.api}/charge`,
         {
             stripeToken: token.id,
             stripeEmail: email,
@@ -31,7 +31,6 @@ export class PaymentService {
         },)
         .subscribe(resp => {
             if(resp.status == 200){
-                console.log('charged');
                 //create a new discount code
                 this.discountService.addDiscountCode(newDiscount);
                 
